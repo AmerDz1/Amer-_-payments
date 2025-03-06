@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥🔥 Test Bin 🔥🔥</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f8f9fa; }
+        h1 { color: #ff4500; }
+        .packages { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; }
+        .package { width: 200px; padding: 15px; border-radius: 10px; text-align: center; color: white; font-weight: bold; }
+        .bronze { background-color: #cd7f32; }
+        .silver { background-color: #c0c0c0; color: black; }
+        .gold { background-color: #ffd700; color: black; }
+        .diamond { background-color: #4facf7; }
+        button { margin-top: 10px; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <h1>🔥🔥 Test Bin 🔥🔥</h1>
+    <div class="packages">
+        <div class="package bronze"><h3>Bronze Plan</h3><p>$0.20</p><button onclick="buy(0.20)">Buy</button></div>
+        <div class="package silver"><h3>Silver Plan</h3><p>$0.49</p><button onclick="buy(0.49)">Buy</button></div>
+        <div class="package gold"><h3>Gold Plan</h3><p>$0.99</p><button onclick="buy(0.99)">Buy</button></div>
+        <div class="package diamond"><h3>Diamond Plan</h3><p>$4.99</p><button onclick="buy(4.99)">Buy</button></div>
+    </div>
+
+    <script>
+        async function buy(amount) {
+            const response = await fetch("/create-checkout-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: amount })
+            });
+            const session = await response.json();
+            const stripe = Stripe("pk_test_51QwVZhLxivUp61goDRXPUBCDeaih4qhHP3PXYXG0JG1nZUhw1QkFgzcJvvvrBGadKMeUuuEAiDNYNfqhD9DeQU3z00kPZCZEyC"); // ضع مفتاحك العام هنا
+            stripe.redirectToCheckout({ sessionId: session.id });
+        }
+    </script>
+</body>
+</html>
